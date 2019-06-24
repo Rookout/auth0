@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"gopkg.in/auth0.v1"
+	"github.com/Rookout/auth0"
 	"gopkg.in/auth0.v1/management"
 )
 
