@@ -89,4 +89,12 @@ func TestConnection(t *testing.T) {
 			t.Error(err)
 		}
 	})
+
+	t.Run("ReadByName", func(t *testing.T) {
+		cs, err := m.Connection.ReadByName("Username-Password-Authentication")
+		if err != nil {
+			t.Error(err)
+		}
+		t.Logf("%v\n", cs)
+	})
 }

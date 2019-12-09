@@ -19,6 +19,7 @@ func TestRole(t *testing.T) {
 	u := &User{
 		Connection: auth0.String("Username-Password-Authentication"),
 		Email:      auth0.String("chuck@chucknorris.com"),
+		Username:   auth0.String("chuck"),
 		Password:   auth0.String("Passwords hide their Chuck"),
 	}
 	err = m.User.Create(u)
@@ -102,12 +103,12 @@ func TestRole(t *testing.T) {
 		t.Logf("%v\n", us)
 	})
 
-	t.Run("AssignPermissions", func(t *testing.T) {
+	t.Run("AssociatePermissions", func(t *testing.T) {
 		ps := []*Permission{
 			{Name: auth0.String("read:resource"), ResourceServerIdentifier: auth0.String("https://api.example.com/role")},
 			{Name: auth0.String("update:resource"), ResourceServerIdentifier: auth0.String("https://api.example.com/role")},
 		}
-		err = m.Role.AssignPermissions(auth0.StringValue(r.ID), ps...)
+		err = m.Role.AssociatePermissions(auth0.StringValue(r.ID), ps...)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -122,12 +123,12 @@ func TestRole(t *testing.T) {
 		t.Logf("%v\n", ps)
 	})
 
-	t.Run("UnassignPermissions", func(t *testing.T) {
+	t.Run("RemovePermissions", func(t *testing.T) {
 		ps := []*Permission{
 			{Name: auth0.String("read:resource"), ResourceServerIdentifier: auth0.String("https://api.example.com/role")},
 			{Name: auth0.String("update:resource"), ResourceServerIdentifier: auth0.String("https://api.example.com/role")},
 		}
-		err = m.Role.UnassignPermissions(auth0.StringValue(r.ID), ps...)
+		err = m.Role.RemovePermissions(auth0.StringValue(r.ID), ps...)
 		if err != nil {
 			t.Fatal(err)
 		}

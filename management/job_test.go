@@ -10,16 +10,22 @@ func TestJob(t *testing.T) {
 
 	var err error
 
+	c, err := m.Connection.ReadByName("Username-Password-Authentication")
+	if err != nil {
+		t.Error(err)
+	}
+	connectionID := auth0.StringValue(c.ID)
+
 	u := &User{
 		Connection: auth0.String("Username-Password-Authentication"),
 		Email:      auth0.String("example@example.com"),
+		Username:   auth0.String("example"),
 		Password:   auth0.String("I have a password and its a secret"),
 	}
 	err = m.User.Create(u)
 	if err != nil {
 		t.Error(err)
 	}
-
 	userID := auth0.StringValue(u.ID)
 
 	defer m.User.Delete(userID)
@@ -53,7 +59,7 @@ func TestJob(t *testing.T) {
 
 	t.Run("ExportUsers", func(t *testing.T) {
 		job := &Job{
-			ConnectionID: auth0.String("con_C2Imdps0x50qqvYF"),
+			ConnectionID: auth0.String(connectionID),
 			Format:       auth0.String("json"),
 			Limit:        auth0.Int(5),
 			Fields: []map[string]interface{}{
@@ -71,7 +77,7 @@ func TestJob(t *testing.T) {
 
 	t.Run("ImportUsers", func(t *testing.T) {
 		job := &Job{
-			ConnectionID:        auth0.String("con_C2Imdps0x50qqvYF"),
+			ConnectionID:        auth0.String(connectionID),
 			Upsert:              auth0.Bool(true),
 			SendCompletionEmail: auth0.Bool(false),
 			Users: []map[string]interface{}{

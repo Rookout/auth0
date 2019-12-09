@@ -13,6 +13,7 @@ func TestTicket(t *testing.T) {
 	u := &User{
 		Connection: auth0.String("Username-Password-Authentication"),
 		Email:      auth0.String("chuck@chucknorris.com"),
+		Username:   auth0.String("chuck"),
 		Password:   auth0.String("I have a password and its a secret"),
 	}
 	m.User.Create(u)
@@ -40,9 +41,10 @@ func TestTicket(t *testing.T) {
 	t.Run("ChangePassword", func(t *testing.T) {
 
 		v := &Ticket{
-			ResultURL: auth0.String("https://example.com/change-password"),
-			UserID:    auth0.String(userID),
-			TTLSec:    auth0.Int(3600),
+			ResultURL:           auth0.String("https://example.com/change-password"),
+			UserID:              auth0.String(userID),
+			TTLSec:              auth0.Int(3600),
+			MarkEmailAsVerified: auth0.Bool(true),
 		}
 
 		v, err = m.Ticket.ChangePassword(v)
