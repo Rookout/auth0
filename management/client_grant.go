@@ -1,11 +1,5 @@
 package management
 
-import (
-	"encoding/json"
-
-	"github.com/Rookout/auth0"
-)
-
 type ClientGrant struct {
 
 	// A generated string identifying the client grant.

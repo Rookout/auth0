@@ -1,10 +1,6 @@
 package management
 
-import (
-	"encoding/json"
-
-	"github.com/Rookout/auth0"
-)
+import "github.com/Rookout/auth0"
 
 type RuleConfig struct {
 
