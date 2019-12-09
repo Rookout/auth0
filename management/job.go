@@ -9,8 +9,6 @@ import (
 	"net/textproto"
 	"strconv"
 	"time"
-
-	"github.com/Rookout/auth0"
 )
 
 type Job struct {

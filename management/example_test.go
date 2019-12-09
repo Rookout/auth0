@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/Rookout/auth0"
-	"gopkg.in/auth0.v1/management"
+	"github.com/Rookout/auth0/management"
 )
 
 var (
