@@ -3,10 +3,10 @@ package management
 import "time"
 
 type Identity struct {
-	Connection *string `json:"connection,omitempty"`
-	UserID     *string `json:"user_id,omitempty"`
-	Provider   *string `json:"provider,omitempty"`
-	IsSocial   *bool   `json:"isSocial,omitempty"`
+	Connection *string     `json:"connection,omitempty"`
+	UserID     interface{} `json:"user_id,omitempty"` // user_id should be string but it's int sometimes.
+	Provider   *string     `json:"provider,omitempty"`
+	IsSocial   *bool       `json:"isSocial,omitempty"`
 }
 
 type User struct {
