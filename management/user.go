@@ -23,7 +23,7 @@ func (i *Identity) UnmarshalJSON(b []byte) error {
 	}
 	ident := Identity(identityAlias)
 	var v struct {
-		UserID interface{} `json:"user_id,string,omitempty"`
+		UserID interface{} `json:"user_id,omitempty"`
 	}
 	// UserID might be a number bigger than int64 - must convert it to Number type
 	d := json.NewDecoder(bytes.NewReader(b))
