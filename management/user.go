@@ -3,6 +3,7 @@ package management
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -37,6 +38,8 @@ func (i *Identity) UnmarshalJSON(b []byte) error {
 		ident.UserID = &idToString
 	case string:
 		ident.UserID = &t
+	default:
+		return fmt.Errorf("cannot unmarshal %T field into Go struct field Identity.user_id of type string", t)
 	}
 	*i = ident
 	return nil
