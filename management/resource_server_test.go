@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"gopkg.in/auth0.v2"
+	"github.com/Rookout/auth0"
 )
 
 func TestResourceServer(t *testing.T) {

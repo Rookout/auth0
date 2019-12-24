@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"gopkg.in/auth0.v2"
+	"github.com/Rookout/auth0"
 )
 
 func TestCustomDomain(t *testing.T) {

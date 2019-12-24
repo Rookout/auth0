@@ -1,19 +1,48 @@
 package management
 
-import "time"
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"time"
+)
 
 type Identity struct {
 	Connection *string `json:"connection,omitempty"`
-	UserID     *string `json:"user_id,omitempty"`
+	UserID     *string `json:"-"` // user_id should be String but it's Int sometimes (github provider for example)
 	Provider   *string `json:"provider,omitempty"`
 	IsSocial   *bool   `json:"isSocial,omitempty"`
 }
 
-type Identity struct {
-	Connection *string `json:"connection,omitempty"`
-	UserID     *string `json:"user_id,omitempty"`
-	Provider   *string `json:"provider,omitempty"`
-	IsSocial   *bool   `json:"isSocial,omitempty"`
+// Used to avoid recursion in UnmarshalJSON below.
+type IdentityAlias Identity
+
+func (i *Identity) UnmarshalJSON(b []byte) error {
+	var identityAlias IdentityAlias
+	if err := json.Unmarshal(b, &identityAlias); err != nil {
+		return err
+	}
+	ident := Identity(identityAlias)
+	var v struct {
+		UserID interface{} `json:"user_id,omitempty"`
+	}
+	// UserID might be a number bigger than int64 - must convert it to Number type
+	d := json.NewDecoder(bytes.NewReader(b))
+	d.UseNumber()
+	if err := d.Decode(&v); err != nil {
+		return err
+	}
+	switch t := v.UserID.(type) {
+	case json.Number:
+		idToString := t.String()
+		ident.UserID = &idToString
+	case string:
+		ident.UserID = &t
+	default:
+		return fmt.Errorf("cannot unmarshal %T field into Go struct field Identity.user_id of type string", t)
+	}
+	*i = ident
+	return nil
 }
 
 type User struct {

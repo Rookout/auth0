@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"gopkg.in/auth0.v2/internal/client"
+	"github.com/Rookout/auth0/internal/client"
 )
 
 // Management is an Auth0 management client used to interact with the Auth0

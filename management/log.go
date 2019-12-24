@@ -3,7 +3,7 @@ package management
 import (
 	"time"
 
-	"gopkg.in/auth0.v2"
+	"github.com/Rookout/auth0"
 )
 
 var logTypeName = map[string]string{

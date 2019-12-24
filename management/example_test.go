@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"gopkg.in/auth0.v2"
-	"gopkg.in/auth0.v2/management"
+	"github.com/Rookout/auth0"
+	"github.com/Rookout/auth0/management"
 )
 
 var (
