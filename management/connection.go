@@ -1,7 +1,5 @@
 package management
 
-import "encoding/json"
-
 type Connection struct {
 	// A generated string identifying the connection.
 	ID *string `json:"id,omitempty"`
@@ -47,8 +45,7 @@ type Connection struct {
 }
 
 func (c *Connection) String() string {
-	b, _ := json.MarshalIndent(c, "", "  ")
-	return string(b)
+	return Stringify(c)
 }
 
 // ConnectionOptions general options
@@ -68,6 +65,9 @@ type ConnectionOptions struct {
 
 	// Options for password dictionary policy.
 	PasswordDictionary map[string]interface{} `json:"password_dictionary,omitempty"`
+
+	// Options for password complexity options.
+	PasswordComplexityOptions map[string]interface{} `json:"password_complexity_options,omitempty"`
 
 	APIEnableUsers               *bool `json:"api_enable_users,omitempty"`
 	BasicProfile                 *bool `json:"basic_profile,omitempty"`
@@ -117,6 +117,9 @@ type ConnectionOptions struct {
 
 	// Adfs
 	AdfsServer *string `json:"adfs_server,omitempty"`
+
+	// Salesforce community
+	CommunityBaseURL *string `json:"community_base_url"`
 }
 
 type ConnectionManager struct {
@@ -124,34 +127,66 @@ type ConnectionManager struct {
 }
 
 type ConnectionOptionsTotp struct {
-	TimeStep *int `json:time_step,omitempty`
-	Length   *int `json:length,omitempty`
+	TimeStep *int `json:"time_step,omitempty"`
+	Length   *int `json:"length,omitempty"`
 }
 
 func NewConnectionManager(m *Management) *ConnectionManager {
 	return &ConnectionManager{m}
 }
 
+// Creates a new connection.
+//
+// See: https://auth0.com/docs/api/management/v2#!/Connections/post_connections
 func (cm *ConnectionManager) Create(c *Connection) error {
 	return cm.m.post(cm.m.uri("connections"), c)
 }
 
+// Retrieves a connection by its id.
+//
+// See: https://auth0.com/docs/api/management/v2#!/Connections/get_connections_by_id
 func (cm *ConnectionManager) Read(id string, opts ...reqOption) (*Connection, error) {
 	c := new(Connection)
 	err := cm.m.get(cm.m.uri("connections", id)+cm.m.q(opts), c)
 	return c, err
 }
 
+// Retrieves every connection matching the specified strategy.
+//
+// See: https://auth0.com/docs/api/management/v2#!/Connections/get_connections
 func (cm *ConnectionManager) List(opts ...reqOption) ([]*Connection, error) {
 	var c []*Connection
 	err := cm.m.get(cm.m.uri("connections")+cm.m.q(opts), &c)
 	return c, err
 }
 
+// Updates a connection.
+//
+// Note: if you use the options parameter, the whole options object will be
+// overridden, so ensure that all parameters are present.
+//
+// See: https://auth0.com/docs/api/management/v2#!/Connections/patch_connections_by_id
 func (cm *ConnectionManager) Update(id string, c *Connection) (err error) {
 	return cm.m.patch(cm.m.uri("connections", id), c)
 }
 
+// Deletes a connection and all its users.
+//
+// See: https://auth0.com/docs/api/management/v2#!/Connections/delete_connections_by_id
 func (cm *ConnectionManager) Delete(id string) (err error) {
 	return cm.m.delete(cm.m.uri("connections", id))
+}
+
+// Retrieves a connection by its name. This is a helper method when a connection
+// id is not readily available.
+func (cm *ConnectionManager) ReadByName(name string, opts ...reqOption) (*Connection, error) {
+	opts = append(opts, Parameter("name", name))
+	c, err := cm.List(opts...)
+	if err != nil {
+		return nil, err
+	}
+	if len(c) > 0 {
+		return c[0], nil
+	}
+	return nil, &managementError{404, "Not Found", "Connection not found"}
 }
