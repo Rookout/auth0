@@ -6,7 +6,7 @@ type EmailTemplate struct {
 	// "welcome_email", "blocked_account", "stolen_credentials",
 	// "enrollment_email", "change_password", "password_reset" or
 	// "mfa_oob_code".
-	Template *string `json:"template"`
+	Template *string `json:"template,omitempty"`
 
 	// The body of the template.
 	Body *string `json:"body,omitempty"`
@@ -27,7 +27,7 @@ type EmailTemplate struct {
 	URLLifetimeInSecoonds *int `json:"urlLifetimeInSeconds,omitempty"`
 
 	// Whether or not the template is enabled.
-	Enabled *bool `json:"enabled"`
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 func (e *EmailTemplate) String() string {
@@ -59,7 +59,7 @@ func (em *EmailTemplateManager) Create(e *EmailTemplate) error {
 // legacy scenarios.
 //
 // See: https://auth0.com/docs/api/management/v2#!/Email_Templates/get_email_templates_by_templateName
-func (em *EmailTemplateManager) Read(template string, opts ...reqOption) (*EmailTemplate, error) {
+func (em *EmailTemplateManager) Read(template string, opts ...ReqOption) (*EmailTemplate, error) {
 	e := new(EmailTemplate)
 	err := em.m.get(em.m.uri("email-templates", template)+em.m.q(opts), e)
 	return e, err
