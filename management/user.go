@@ -91,6 +91,10 @@ type User struct {
 
 	// Total number of logins this user has performed. Read only, cannot be modified.
 	LoginsCount *int64 `json:"logins_count,omitempty"`
+
+	// Users authenticated with azure AD sometimes won't be sent back with
+	// email from azure, having upn as a replacement that mostly have the email
+	AzureUserPrincipalName *string `json:"upn,omitempty"`
 }
 
 type UserIdentity struct {
