@@ -119,6 +119,10 @@ type User struct {
 
 	// True if the user is blocked from the application, false if the user is enabled
 	Blocked *bool `json:"blocked,omitempty"`
+	
+	// Sometimes azure AD hold email per azure user or hold send auth0 the email, instead
+	// auth0 will use the UserPrincipalName instead, mostly it is the email, but not guaranteed
+	AzureUserPrincipalName *string `json:upn,omitempty"`
 }
 
 func (u *User) String() string {
