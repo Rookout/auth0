@@ -1,10 +1,10 @@
 package management
 
 import (
-	"gopkg.in/auth0.v4/internal/testing/expect"
+	"github.com/Rookout/auth0/internal/testing/expect"
 	"testing"
 
-	"gopkg.in/auth0.v4"
+	"github.com/Rookout/auth0"
 )
 
 func TestHook(t *testing.T) {

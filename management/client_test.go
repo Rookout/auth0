@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"gopkg.in/auth0.v4"
+	"github.com/Rookout/auth0"
 )
 
 func TestClient(t *testing.T) {
