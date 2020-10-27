@@ -1,4 +1,4 @@
-module gopkg.in/auth0.v4
+module github.com/Rookout/auth0
 
 go 1.12
 
