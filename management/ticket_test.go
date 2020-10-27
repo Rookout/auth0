@@ -3,7 +3,7 @@ package management
 import (
 	"testing"
 
-	"gopkg.in/auth0.v4"
+	"github.com/Rookout/auth0"
 )
 
 func TestTicket(t *testing.T) {
